@@ -2,13 +2,13 @@
 # === Network Scanner ===
 # =======================
 
+import sys
 import subprocess
 import socket
 
+print("\n=== Network Scanner ===")
 
-print("=== Network Scanner ===")
-
-network = input("Enter network (e.g. 192.168.1): ")
+network = input("Enter network (123.456.7): ")
 
 print("\nScanning network...\n")
 
@@ -22,38 +22,38 @@ except:
     pass
 
 for i in range(1, 255):
-
     ip = f"{network}.{i}"
 
 # _________________________________________________________________________________________________
 
+    progress = int((i / total) * 100)
+    bar_length = 30
+    filled = int(bar_length * i // total)
+    bar = "█" * filled + "-" * (bar_length - filled)
 
-print(f"Scanning {ip}...", end="\r")
+    sys.stdout.write(f"\rScanning: |{bar}| {progress}% ({i}/254)")
+    sys.stdout.flush()
+
+# _________________________________________________________________________________________________
 
     try:
-        
-        result = subprocess.run(
-            ["ping", "-n", "1", "-w", "100", ip],
-            capture_output=True,
-            text=True
-        )
+        result = subprocess.run(["ping", "-n", "1", "-w", "100",ip],
+                                capture_output=True,
+                                text=True
+                                )
 
-        if "TTL=" in result.stdout:
+        if "ttl=" in result.stdout.lower() :
 
             try:
                 hostname = socket.gethostbyaddr(ip)[0]
             except:
                 hostname = "Unknown"
 
-            print(f"{ip}  →  {hostname} (ONLINE)")
+            print(f"\n{ip} = {hostname} (ONLINE)")
 
     except:
         pass
 
-    print("\n\nScan Complete.")
-
-
-
-
+print("\n\nScan Complete.")
 
 # _________________________________________________________________________________________________
