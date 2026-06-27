@@ -63,3 +63,27 @@ for i in range(1, 255):
 print("\n\nScan Complete.")
 
 # _________________________________________________________________________________________________
+
+# ------------
+# List Devices
+# ------------
+
+choice = input("\nWould you like to list all devices found? (y/n): ").lower()
+
+if choice == "y":
+
+    if len(devices) == 0:
+        print("\nNo devices were found.")
+
+    else:
+        print(f"\nTotal Devices Found: {len(devices)}\n")
+
+        for number, (ip, hostname) in enumerate(devices, start=1):
+            print(f"{number}. {hostname} - {ip}")
+
+        # print(f"\nTotal Devices Found: {len(devices)}")
+
+else:
+    print("\nGoodbye")
+    
+# _________________________________________________________________________________________________
